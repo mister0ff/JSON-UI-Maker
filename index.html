@@ -3,13 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSON-UI Builder</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+    <!-- Top Navigation Bar -->
     <div class="top-navbar">
         <div class="navbar-left">
             <div class="importers">
@@ -27,6 +28,7 @@
         </div>
 
         <div class="navbar-center">
+            <!-- Authentication UI -->
             <div id="authStatus" class="auth-status-inline">
                 <span id="authUserDisplay">Not signed in</span>
                 <button id="authSignInBtn" onclick="Builder.openAuthModal(false)">Sign In</button>
@@ -34,6 +36,7 @@
                 <button id="authLogoutBtn" onclick="Builder.logout()" style="display: none;">Logout</button>
             </div>
 
+            <!-- Preset buttons -->
             <button id="presetUploadBtn" onclick="Builder.openUploadPresetModal()" style="display: none;" class="navbar-preset-btn primary">Upload Preset</button>
             <button id="presetManagementBtn" onclick="Builder.openPresetManagementModal()" style="display: none;" class="navbar-preset-btn secondary">Manage Presets</button>
             <button class="navbar-preset-btn tertiary" onclick="Builder.texturePresetsModal()">Preset Textures</button>
@@ -62,6 +65,7 @@
         </div>
     </div>
 
+    <!-- The Settings Modal -->
     <div id="modalSettings" class="modal">
         <div class="modal-content">
             <span id="modalSettingsClose" class="modalClose">&times;</span>
@@ -71,6 +75,9 @@
             </div>
         </div>
     </div>
+    <!--------------->
+
+    <!-- The Add Button Modal -->
     <div id="modalAddButton" class="modal">
         <div class="modal-content">
             <span id="modalAddButtonClose" class="modalClose">&times;</span>
@@ -80,6 +87,9 @@
             </div>
         </div>
     </div>
+    <!--------------->
+
+    <!-- The Create Form Modal -->
     <div id="modalCreateForm" class="modal">
         <div class="modal-content">
             <h2 class="modalHeader">Create Form</h2>
@@ -88,6 +98,9 @@
             </div>
         </div>
     </div>
+    <!--------------->
+
+    <!-- The Load Texture Presets Modal -->
     <div id="modalLoadTexturePresets" class="modal">
         <div class="modal-content">
             <span id="modalLoadTexturePresetsClose" class="modalClose">&times;</span>
@@ -97,6 +110,9 @@
             </div>
         </div>
     </div>
+    <!--------------->
+
+    <!-- The Help Menu Modal -->
     <div id="modalHelpMenu" class="modal">
         <div class="modal-content">
             <span id="modalHelpMenuClose" class="modalClose">&times;</span>
@@ -128,6 +144,9 @@
             </div>
         </div>
     </div>
+    <!--------------->
+
+    <!-- The Choose Image Modal -->
     <div id="modalChooseImage" class="modal">
         <div class="modal-content">
             <span id="modalChooseImageClose" class="modalClose">&times;</span>
@@ -139,6 +158,8 @@
             </div>
         </div>
     </div>
+    <!--------------->
+
     <div class="main">
         <div class="buttons">
             <div class="addElements">
@@ -161,32 +182,26 @@
                         style="width: 20px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);"
                         src="icons/bin.webp" alt="Delete"> </button>
 
-                <div class="mobile-action-bar">
-                    <button class="utilElement action-btn" type="button" onclick="Builder.copySelected ? Builder.copySelected() : document.dispatchEvent(new KeyboardEvent('keydown', {key: 'c', ctrlKey: true}))" title="Copy">Copy</button>
-                    <button class="utilElement action-btn" type="button" onclick="Builder.pasteSelected ? Builder.pasteSelected() : document.dispatchEvent(new KeyboardEvent('keydown', {key: 'v', ctrlKey: true}))" title="Paste">Paste</button>
-                    <button class="utilElement action-btn" type="button" onclick="Builder.duplicateSelected ? Builder.duplicateSelected() : (Builder.copySelected && Builder.copySelected(), Builder.pasteSelected && Builder.pasteSelected())" title="Duplicate">Duplicate</button>
-                </div>
-
                 <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
                     <div class="utilElement" style="width: 100%;">Form</div>
 
-                    <button class="utilElement icon-btn" title="Copy" onclick="Builder.generateAndCopyJsonUI ? Builder.generateAndCopyJsonUI('copy') : Builder.copyJsonUI && Builder.copyJsonUI()">
-                        <img style="width: 20px; filter: drop-shadow(0px 0px 5px #000000);" src="icons/clipboard.webp" alt="Copy">
-                    </button>
-                    <button class="utilElement icon-btn" title="Download" onclick="Builder.generateAndCopyJsonUI ? Builder.generateAndCopyJsonUI('download') : Builder.downloadJsonUI && Builder.downloadJsonUI()">
-                        <img style="width: 20px; filter: drop-shadow(0px 0px 5px #000000);" src="icons/download.webp" alt="Download">
-                    </button>
+                    <img class="utilElement" title="Copy" onclick="Builder.generateAndCopyJsonUI('copy')"
+                        style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;"
+                        src="icons/clipboard.webp" alt="Copy">
+                    <img class="utilElement" title="Download" onclick="Builder.generateAndCopyJsonUI('download')"
+                        style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;"
+                        src="icons/download.webp" alt="Download">
                 </div>
 
                 <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
                     <div class="utilElement" style="width: 100%;">Server-Form</div>
 
-                    <button class="utilElement icon-btn" title="Copy" onclick="if (typeof Builder.downloadServerForm === 'function') { Builder.downloadServerForm('copy'); } else if (typeof Builder.copyServerForm === 'function') { Builder.copyServerForm(); }">
-                        <img style="width: 20px; filter: drop-shadow(0px 0px 5px #000000);" src="icons/clipboard.webp" alt="Copy">
-                    </button>
-                    <button class="utilElement icon-btn" title="Download" onclick="if (typeof Builder.downloadServerForm === 'function') { Builder.downloadServerForm('download'); } else if (typeof Builder.downloadServerFormFile === 'function') { Builder.downloadServerFormFile(); }">
-                        <img style="width: 20px; filter: drop-shadow(0px 0px 5px #000000);" src="icons/download.webp" alt="Download">
-                    </button>
+                    <img class="utilElement" title="Copy" onclick="Builder.downloadServerForm('copy')"
+                        style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;"
+                        src="icons/clipboard.webp" alt="Copy">
+                    <img class="utilElement" title="Download" onclick="Builder.downloadServerForm('download')"
+                        style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;"
+                        src="icons/download.webp" alt="Download">
                 </div>
 
             </div>
@@ -240,35 +255,223 @@
 
     <div id="mainWarningMessage"></div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Travar rolagem indesejada da página ao arrastar elementos
-            document.body.addEventListener('touchmove', function (e) {
-                if (e.target.closest('#main_window') || e.target.closest('.draggable-panel')) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
-
-            // Delegação para Seleção por Duplo Clique nos elementos da janela principal
-            const mainWindow = document.getElementById('main_window');
-            if (mainWindow) {
-                mainWindow.addEventListener('dblclick', function (e) {
-                    const target = e.target.closest('.draggable-panel, .draggable-canvas, .draggable-button');
-                    if (target) {
-                        if (window.Builder && typeof Builder.selectElement === 'function') {
-                            Builder.selectElement(target);
-                        } else {
-                            target.classList.add('selected');
-                        }
-                    }
-                });
-            }
-        });
-    </script>
-
     <script src="./dist/index.js" type="module"></script>
 
+    <style>
+        /* Top Navigation Bar */
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            min-height: 60px;
+            background-color: linear-gradient(135deg, rgb(58, 58, 58, 0.95), rgb(0, 0, 0, 0.95));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .navbar-left,
+        .navbar-center,
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-center {
+            flex: 1;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .navbar-divider {
+            width: 1px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 5px;
+        }
+
+        .navbar-right {
+            gap: 15px;
+        }
+
+        .scale-control {
+            display: flex;
+            align-items: center;
+        }
+
+        #undo-btn,
+        #redo-btn {
+            font-size: 13px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #444, #333);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        #undo-btn:hover:not(:disabled),
+        #redo-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #555, #444);
+            transform: translateY(-1px);
+        }
+
+        #undo-btn:disabled,
+        #redo-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Authentication Status - Inline in navbar */
+        .auth-status-inline {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(20, 20, 20, 0.6));
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .auth-status-inline span {
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .auth-status-inline button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        #authSignInBtn,
+        #authSignUpBtn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+
+        #authSignInBtn:hover,
+        #authSignUpBtn:hover {
+            background: linear-gradient(135deg, #0056b3, #004085);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        #authLogoutBtn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        #authLogoutBtn:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Preset buttons in navbar */
+        .navbar-preset-btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .navbar-preset-btn.primary {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+        }
+
+        .navbar-preset-btn.primary:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .navbar-preset-btn.secondary {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+        }
+
+        .navbar-preset-btn.secondary:hover {
+            background: linear-gradient(135deg, #138496, #117a8b);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+        }
+
+        .navbar-preset-btn.tertiary {
+            background: linear-gradient(135deg, #6f42c1, #5a32a3);
+            color: white;
+        }
+
+        .navbar-preset-btn.tertiary:hover {
+            background: linear-gradient(135deg, #5a32a3, #4c2a8a);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(111, 66, 193, 0.3);
+        }
+
+        /* Adjust main content to account for navbar */
+        .main {
+            margin-top: 70px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1600px) {
+            .navbar-center {
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .auth-status-inline span {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-navbar {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .navbar-left,
+            .navbar-center,
+            .navbar-right {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .navbar-divider {
+                display: none;
+            }
+
+            .main {
+                margin-top: 160px;
+            }
+        }
+    </style>
 </body>
 
 </html>
-
