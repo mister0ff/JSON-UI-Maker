@@ -1,59 +1,134 @@
+:root { 
+    --mc-bg: #1c1b1b;
+    --mc-panel-bg: #2b2a2a;
+    --mc-card-bg: #141414;
+    --mc-border-green: #408335;
+    --mc-btn-green: #2e6930;
+    --mc-btn-green-hover: #3b873e;
+    --mc-btn-border: #52a356;
+    --mc-badge-green: #48a03f;
+    --mc-badge-blue: #0078d4;
+    --mc-text-title: #ffffff;
+    --mc-text-sub: #b3b3b3;
+    --mc-input-bg: #0a0a0a;
+}
+
+@font-face {
+    font-family: "MinecraftRegular";
+    src: url("./fonts/MinecraftRegular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "MinecraftTen";
+    src: url("./fonts/MinecraftTen.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 html,
 body {
-    margin-bottom: 0;
+    margin: 0;
     padding: 0;
     height: 100%;
     width: 100%;
-    background-color: rgb(26, 26, 26);
-    font-family: sans-serif;
+    background-color: var(--mc-bg);
+    background-image: radial-gradient(circle at center, #2b2929 0%, #171616 100%);
+    color: var(--mc-text-title);
 }
 
 input[type="file"] {
     display: none;
 }
 
-.importers > * {
-    position: relative;
-    display: inline-block;
+/* --- ESTILO DE BOTÕES ESTILO MINECRAFT --- */
+.importers > *,
+.modalSettingsBtn,
+.addElements > *,
+.utilElement,
+.propertyInputButton,
+.modalSubmitButton,
+.scripter_buttons > * {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: var(--mc-btn-green);
+    border: 2px solid var(--mc-btn-border);
+    border-radius: 3px;
+    color: #ffffff;
+    padding: 8px 12px;
     cursor: pointer;
-    padding: 10px;
-    margin-right: 12px; /* 👈 add spacing between buttons */
-    background: linear-gradient(45deg, rgb(227, 0, 114), rgb(115, 0, 255));
-    color: white;
-    border-radius: 4px;
-    font-family: sans-serif;
-    font-size: 20px;
+    outline: none;
     text-align: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: transform 0.05s ease, filter 0.1s ease, background-color 0.2s ease;
 }
 
-.importers > *:hover {
-    box-shadow: 6px 5px 31px -7px rgba(0, 0, 0, 0.75);
-    transform: scale(1.05); /* 120% */
+.importers > *:hover,
+.modalSettingsBtn:hover,
+.addElements > *:hover,
+.utilElement:hover,
+.propertyInputButton:hover,
+.modalSubmitButton:hover,
+.scripter_buttons > *:hover {
+    background-color: var(--mc-btn-green-hover);
+    border-color: #62c467;
+}
+
+.importers > *:active,
+.modalSettingsBtn:active,
+.addElements > *:active,
+.utilElement:active,
+.propertyInputButton:active,
+.modalSubmitButton:active,
+.scripter_buttons > *:active {
+    transform: scale(0.97) !important;
+    filter: brightness(0.85);
+}
+
+/* --- BOTÕES SECUNDÁRIOS / CINZENTOS --- */
+.modalSettingsBtn,
+.utilElement,
+.propertyInputButton,
+.scripter_buttons > * {
+    background-color: #383737;
+    border-color: #525050;
+}
+
+.modalSettingsBtn:hover,
+.utilElement:hover,
+.propertyInputButton:hover,
+.scripter_buttons > *:hover {
+    background-color: #4a4848;
+    border-color: #6e6b6b;
 }
 
 .importers {
     position: relative;
     left: 10px;
     display: inline-block;
-    cursor: pointer;
-    color: white;
-    border-radius: 4px;
-    font-family: sans-serif;
-    font-size: 14px;
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.importers > * {
+    display: inline-block;
+    margin-right: 12px;
 }
 
 .discord_link {
-    position: absolute; /* or fixed, or relative depending on context */
+    position: absolute;
     left: calc(100% - 70px);
     top: 10px;
     transition: all 0.3s ease;
 }
 
 .discord_link:hover {
-    box-shadow: 6px 5px 31px -7px rgba(0, 0, 0, 0.75);
     transform: scale(1.1) rotate(3deg);
 }
 
@@ -76,17 +151,11 @@ input[type="file"] {
     top: -2px;
 }
 
-/* Define the animation */
 @keyframes rotateInfinitely {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-/* Apply animation on hover */
 .modalSettingsBtn:hover .settings_img {
     animation: rotateInfinitely 1.5s linear infinite;
 }
@@ -99,47 +168,35 @@ input[type="file"] {
     left: 10px;
     width: 100px;
     text-align: left;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: rgb(59, 56, 71);
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: rgb(80, 77, 77) 1px solid;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.modalSettingsBtn:hover {
-    box-shadow: 6px 5px 31px -7px rgba(0, 0, 0, 0.75);
-    transform: scale(1.05); /* 120% */
 }
 
 .breaker {
     width: 100%;
     height: 15px;
     flex: 0 0 auto;
-    background: linear-gradient(45deg, rgb(227, 0, 114), rgb(115, 0, 255));
-    border-radius: 4px;
+    background-color: var(--mc-border-green);
+    border-radius: 2px;
 }
 
 .main_window_outline {
-    overflow: hidden; /* <-- add this */
+    overflow: hidden;
     position: relative;
     width: 1506px;
     height: calc(1510px / 1.7777777);
     margin: 10px;
-    border-radius: 15px;
-    background: linear-gradient(45deg, rgb(227, 0, 114), rgb(115, 0, 255));
+    border-radius: 6px;
+    background-color: var(--mc-border-green);
+    padding: 3px;
     flex: 0 0 auto;
 }
 
 .main_window {
-    overflow: hidden; /* <-- add this */
+    overflow: hidden;
     position: relative;
     width: 1500px;
     height: calc(1500px / 1.7777777);
-    margin: 3px;
-    border-radius: 14px;
+    border-radius: 4px;
+    background-color: var(--mc-card-bg);
     flex: 0 0 auto;
 }
 
@@ -149,98 +206,34 @@ input[type="file"] {
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 14px;
+    border-radius: 4px;
 }
 
-.addElements {
+.addElements, .utilElements {
     display: flex;
     flex-direction: column;
     gap: 10px;
     text-align: center;
     color: white;
-}
-
-.addElements > * {
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 5px;
-    padding-left: 30px;
-    padding-right: 30px;
-    border-radius: 5px;
-    background-color: rgb(59, 56, 71);
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: rgb(80, 77, 77) 1px solid;
-}
-
-.addElements > *:hover {
-    box-shadow: 6px 5px 31px -7px rgba(0, 0, 0, 0.75);
-    outline: rgb(162, 0, 255) 2px solid;
-}
-
-.utilElement:hover {
-    box-shadow: 6px 5px 31px -7px rgba(0, 0, 0, 0.75);
-    outline: rgb(162, 0, 255) 2px solid;
-}
-
-.utilElements {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    text-align: center;
-    color: white;
-}
-
-.utilElement {
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: rgb(59, 56, 71);
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: rgb(80, 77, 77) 1px solid;
-}
-
-.propertyInputButton {
-    margin-top: 4px;
-    padding: 6px;
-    border-radius: 5px;
-    background-color: rgb(59, 56, 71);
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: rgb(80, 77, 77) 1px solid;
-}
-
-.propertyInputButton:hover {
-    box-shadow: 6px 5px 31px -7px rgba(0, 0, 0, 0.75);
-    outline: rgb(162, 0, 255) 2px solid;
 }
 
 .draggable-panel {
     position: absolute;
     width: 150px;
     height: 150px;
-    background-color: rgb(0, 0, 255);
-    outline: 2px solid black;
+    background-color: var(--mc-panel-bg);
+    outline: 2px solid var(--mc-border-green);
     cursor: grab;
     z-index: 100;
-    -webkit-user-select: none;
-    -moz-user-select: none;
     user-select: none;
 }
 
 .draggable-canvas {
     position: absolute;
     background-color: rgba(255, 255, 255, 0);
-    outline: 2px solid black;
+    outline: 2px solid var(--mc-border-green);
     cursor: grab;
     z-index: 100;
-    -webkit-user-select: none;
-    -moz-user-select: none;
     user-select: none;
     image-rendering: pixelated;
 }
@@ -250,57 +243,67 @@ input[type="file"] {
 }
 
 .isEditableLabel {
-    color: rgb(155, 155, 155);
+    color: var(--mc-text-sub);
     font-size: small;
 }
 
-.properties {
+.properties, .buttons {
     margin: 10px;
-    margin-right: 20px;
-    padding: 10px;
-    background-color: rgb(39, 39, 39);
-    border-radius: 10px;
+    padding: 15px;
+    background-color: var(--mc-panel-bg);
+    border: 2px solid #3a3939;
+    border-radius: 6px;
     color: white;
-    min-height: 50px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+}
+
+/* --- CAMPOS DE ENTRADA (INPUTS) --- */
+input[type="text"],
+.propertyInput,
+.modalOptionInput,
+.chooseImageSearchInput {
+    font-size: 12px;
+    background-color: var(--mc-input-bg);
+    color: #ffffff;
+    border: 1px solid #3a3939;
+    border-radius: 3px;
+    padding: 8px 10px;
+    outline: none;
+    margin: 4px 0;
+}
+
+input[type="text"]:focus,
+.propertyInput:focus,
+.modalOptionInput:focus,
+.chooseImageSearchInput:focus {
+    border-color: var(--mc-border-green);
 }
 
 .propertyInput {
     width: 300px;
     margin-left: 5px;
     margin-right: 5px;
-    margin-top: 4px;
-    margin-bottom: 4px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: rgb(59, 56, 71);
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: rgb(80, 77, 77) 1px solid;
 }
 
 .resize-handle {
     width: 15px;
     height: 15px;
-    background-color: rgb(128, 128, 128);
+    background-color: var(--mc-border-green);
     position: absolute;
     left: calc(100% - 15px);
     top: calc(100% - 15px);
     cursor: nwse-resize;
-    border-top-left-radius: 5px;
+    border-top-left-radius: 3px;
 }
 
-.buttons {
-    display: flex;
-    flex-direction: column; /* Arrange elements vertically */
-    align-items: start; /* Align buttons to the left */
-    gap: 10px; /* Add spacing between buttons */
-    background-color: rgb(39, 39, 39);
-    border-radius: 10px;
-    margin: 10px;
-}
-
-/* The Modal (background) */
+/* --- MODAL --- */
 .modal {
     display: none;
     position: fixed;
@@ -310,87 +313,54 @@ input[type="file"] {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(3px);
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px);
 }
 
-/* Modal Content Box */
 .modal-content {
-    background-color: #424242;
+    background-color: var(--mc-panel-bg);
     margin: 10% auto;
     padding: 20px;
-    border: 2px solid #9900ff;
+    border: 2px solid var(--mc-border-green);
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.8);
     width: fit-content;
-    border-radius: 8px;
     z-index: 100;
 }
 
-/* Close button */
 .modalClose {
-    color: #ff008c;
+    color: #ff4d4d;
     float: right;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    position: relative;
-    left: calc(fit-content);
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
 }
+
 .modalClose:hover {
-    color: rgb(255, 0, 212);
+    color: #ff1a1a;
     transform: scale(1.2);
 }
 
 .modalHeader {
     color: white;
+    font-weight: 700;
 }
 
-.modalOptionLabel {
-    color: rgb(155, 155, 155);
+.modalOptionLabel, .modalOptionBody {
+    color: var(--mc-text-sub);
     text-align: left;
-    font-weight: 500;
-}
-
-.modalOptionBody {
-    color: rgb(189, 189, 189);
-    text-align: left;
-    font-weight: 500;
-}
-
-.modalOptionInput {
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 4px;
-    margin-bottom: 4px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: rgb(59, 56, 71);
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: rgb(80, 77, 77) 1px solid;
+    font-weight: 600;
 }
 
 .modalSubmitButton {
     margin-top: 10px;
-    font-size: 28px;
-    padding: 5px;
+    font-size: 14px;
+    padding: 10px;
     width: 100%;
-    border-radius: 5px;
-    background-color: rgb(59, 56, 71);
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: rgb(80, 77, 77) 1px solid;
 }
 
-.modalSubmitButton:hover {
-    box-shadow: 6px 5px 31px -7px rgba(0, 0, 0, 0.75);
-    outline: rgb(162, 0, 255) 2px solid;
-}
-
-/* ==================== */
-
+/* --- ESTRUTURA PRINCIPAL --- */
 .main {
     display: flex;
 }
@@ -405,20 +375,36 @@ input[type="file"] {
     color: white;
     flex: 1;
     height: calc(1510px / 1.7777777);
-    background-color: rgb(39, 39, 39);
-    border-radius: 10px;
+    background-color: var(--mc-panel-bg);
+    border: 2px solid #3a3939;
+    border-radius: 6px;
+}
+
+.scripter_text, .bindings {
+    border-radius: 4px;
+    margin: 10px;
+    text-align: left;
+    background-color: var(--mc-input-bg);
+    border: 1px solid var(--mc-border-green);
+    color: #55FF55;
+    font-family: monospace;
+    outline: none;
+    resize: none;
 }
 
 .scripter_text {
     height: 400px;
-    border-radius: 10px;
-    margin: 10px;
-    text-align: left;
-    background-color: #424242;
-    outline: rgb(153, 0, 255) 2px solid;
-    border: none;
-    resize: none;
     white-space: nowrap;
+}
+
+.bindings {
+    height: 260px;
+    width: calc(100% - 20px);
+    align-self: center;
+    white-space: pre;
+    overflow-x: auto;
+    font-size: 14px;
+    scrollbar-color: var(--mc-border-green) var(--mc-card-bg);
 }
 
 .scripter_buttons {
@@ -428,66 +414,35 @@ input[type="file"] {
     flex-direction: row;
     gap: 10px;
     text-align: center;
-    color: white;
 }
 
 .scripter_buttons > * {
-    padding: 5px;
     width: 50%;
-    border-radius: 5px;
-    background-color: rgb(59, 56, 71);
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: rgb(80, 77, 77) 1px solid;
-}
-
-.scripter_buttons > *:hover {
-    box-shadow: 6px 5px 31px -7px rgba(0, 0, 0, 0.75);
-    outline: rgb(162, 0, 255) 2px solid;
 }
 
 .scripter_title_label {
     margin-top: 10px;
     font-size: 1.3em;
+    font-weight: bold;
 }
 
 .draggable-scrolling_panel {
-    height: 300px; /* Set a height */
-    overflow-y: scroll; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Optional: hide horizontal scroll */
-    scroll-behavior: smooth; /* Optional: smooth scrolling effect */
+    height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 .draggable-scrolling_panel::-webkit-scrollbar {
     display: none;
 }
 
-.bindings {
-    height: 260px;
-    width: calc(100% - 20px);
-    border-radius: 10px;
-    margin: 10px;
-    align-self: center;
-    text-align: left;
-    background-color: #424242;
-    outline: rgb(153, 0, 255) 2px solid;
-    color: white;
-    border: none;
-    resize: none;
-    white-space: pre;
-    overflow-x: auto;
-    font-size: 20px;
-    scrollbar-color: rgb(0, 0, 0) rgb(73, 73, 73);
-}
-
 .gridable {
-    position: absolute; /* so absolute children still position relative to the panel */
-    background-image: linear-gradient(to right, rgba(55, 55, 55, 1) 2px, transparent 2px), linear-gradient(to bottom, rgba(55, 55, 55, 1) 2px, transparent 2px);
+    position: absolute;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 2px, transparent 2px), 
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 2px, transparent 2px);
     background-size: calc(100% / var(--grid-cols)) calc(100% / var(--grid-rows));
-
-    background-position: -1px -1px; /* X offset, Y offset */
-
+    background-position: -1px -1px;
     width: 100%;
     height: 100%;
 }
@@ -499,125 +454,82 @@ input[type="file"] {
     width: 300px;
     min-height: 40px;
     max-height: 197px;
-    border-radius: 5px;
-    background-color: rgb(59, 56, 71);
+    border-radius: 4px;
+    background-color: var(--mc-card-bg);
     color: white;
     cursor: pointer;
-    border: none;
-    outline: rgb(174, 0, 255) 1px solid;
+    border: 2px solid var(--mc-border-green);
     z-index: 100;
-
-    overflow: hidden;
     overflow-y: scroll;
     overflow-x: scroll;
-
     scrollbar-width: thin;
-    scrollbar-color: rgb(0, 0, 0) rgb(73, 73, 73);
+    scrollbar-color: var(--mc-border-green) var(--mc-card-bg);
 }
 
 .textPromptOption {
     position: relative;
     left: 0px;
-    transition: all 0.3s ease;
-    padding: 5px;
+    transition: all 0.2s ease;
+    padding: 6px;
 }
 
 .textPromptOption:hover {
-    box-shadow: 6px 5px 31px -7px rgba(0, 0, 0, 0.75);
-    outline: rgb(162, 0, 255) 2px solid;
-    left: 4px;
+    background-color: var(--mc-panel-bg);
+    border-left: 3px solid var(--mc-border-green);
+    left: 2px;
 }
 
 .textPromptOptionHighlighted {
-    background: linear-gradient(45deg, rgb(104, 0, 104), rgb(58, 0, 145));
-    box-shadow: 6px 5px 31px -7px rgba(0, 0, 0, 0.75);
+    background-color: var(--mc-btn-green);
     position: relative;
-    left: 4px;
-    padding: 5px;
+    left: 2px;
+    padding: 6px;
 }
 
-#mainWarningMessage {
-    position: fixed;
-    top: 20px;
-    left: calc(100%);
-    display: flex;
-    flex-direction: column; /* Stack vertically */
-    gap: 10px; /* Space between notifications */
-    z-index: 9999;
-}
-
-/* Container for all notifications */
-#notif-container {
+/* --- NOTIFICAÇÕES E AVISOS --- */
+#notif-container, #mainWarningMessage {
     position: fixed;
     top: 20px;
     right: 20px;
     display: flex;
-    flex-direction: column; /* Stack vertically */
-    gap: 10px; /* Space between notifications */
+    flex-direction: column;
+    gap: 10px;
     z-index: 9999;
 }
 
-/* Container for all notifications */
-#notif-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    flex-direction: column; /* Stack vertically */
-    gap: 10px; /* Space between notifications */
-    z-index: 9999;
-}
-
-/* Individual notification */
 .clipboard-notif {
     opacity: 0;
-    background-color: #3f3f3f;
+    background-color: var(--mc-card-bg);
     color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    outline: rgb(174, 0, 255) 2px solid;
-    transform: translateX(300px); /* Start off-screen */
-    transition: transform 0.5s ease, opacity 0.5s ease;
-    font-size: 20px;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    border: 2px solid var(--mc-border-green);
+    transform: translateX(300px);
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-/* Slide in */
 .clipboard-notif.show {
     transform: translateX(0);
     opacity: 1;
 }
 
+/* --- EXPLORER --- */
 .explorer {
     position: relative;
     width: calc(100% - 10px);
     height: 100%;
     margin: 5px;
-    border-radius: 10px;
-    background-color: rgb(71, 71, 71);
+    border-radius: 4px;
+    background-color: var(--mc-card-bg);
+    border: 1px solid #333;
     white-space: pre;
     overflow-x: auto;
-    max-width: 210px; /* don’t grow wider than parent */
+    max-width: 210px;
     max-height: 381.34px;
-    scrollbar-color: rgb(0, 0, 0) rgb(59, 59, 59);
-}
-
-.explorerDiv {
-    position: relative;
-}
-
-.explorerArrow {
-    display: inline;
-    padding: 4px;
-    border-radius: 50%;
-    position: relative;
-    top: 5px;
-    width: 13px;
-    transition: all 0.3s ease;
-}
-
-.explorerArrow:hover {
-    top: 2px;
+    scrollbar-color: var(--mc-border-green) var(--mc-card-bg);
 }
 
 .explorerText {
@@ -627,61 +539,13 @@ input[type="file"] {
 
 .explorerText:hover {
     text-decoration: underline;
-    user-select: none; /* Prevents text selection */
+    user-select: none;
 }
+
 .selected {
-    background: linear-gradient(45deg, rgb(104, 0, 104), rgb(58, 0, 145));
-    padding: 2px;
-    border-radius: 5px;
-}
-
-.explorerLocked {
-    width: 13px;
-    position: relative;
-    top: 3px;
-    padding-left: 10px;
-}
-
-.explorerVisibilityToggle {
-    width: 25px;
-    position: relative;
-    top: 5px;
-    padding-left: 10px;
-    transition: all 0.3s ease;
-}
-
-.explorerVisibilityToggle:hover {
-    width: 25px;
-    position: relative;
-    top: 5px;
-    padding-left: 10px;
-    rotate: -7deg;
-    scale: 1.1;
-}
-
-.explorerDragTextBackground {
-    position: absolute;
-    color: white;
-    user-select: none; /* Prevents text selection */
-    background-color: rgba(68, 68, 182, 0.2);
-    outline: rgb(105, 105, 201) 2px solid;
-    border-radius: 50vh;
-    padding: 2px 6px 2px 6px;
-}
-
-.explorerDragText {
-    position: relative;
-    color: white;
-    user-select: none; /* Prevents text selection */
-    padding: 5px;
-}
-
-.explorerHasNineslice {
-    width: 20px;
-    position: relative;
-    top: 5px;
-    padding-left: 10px;
-    transition: all 0.3s ease;
+    background-color: var(--mc-btn-green);
+    padding: 2px 4px;
+    border-radius: 2px;
 }
 
 .help_button {
@@ -690,7 +554,7 @@ input[type="file"] {
     left: calc(100% - 130px);
     width: 50px;
     height: 50px;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
 .help_button:hover {
@@ -701,118 +565,49 @@ input[type="file"] {
     max-height: 400px;
     width: 500px;
     overflow-y: scroll;
-    scrollbar-color: rgb(0, 0, 0) rgb(73, 73, 73);
+    scrollbar-color: var(--mc-border-green) var(--mc-card-bg);
     padding: 10px;
-    outline: #000000 3px solid;
-    border-radius: 5px;
-    background-color: #3f3f3f;
+    border: 2px solid var(--mc-border-green);
+    border-radius: 4px;
+    background-color: var(--mc-card-bg);
     margin-top: 15px;
 }
 
-@font-face {
-    font-family: "MinecraftRegular";
-    src: url("./fonts/MinecraftRegular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "MinecraftTen";
-    src: url("./fonts/MinecraftTen.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
-
-/* ====== Choose Image Search Styles ====== */
+/* ====== CHOOSE IMAGE SEARCH STYLES ====== */
 .chooseImageSearchWrapper {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 12px 16px;
+    padding: 12px;
     margin-bottom: 12px;
-    background: linear-gradient(145deg, #2a2a2a, #323232);
-    border: 1px solid rgba(153, 0, 255, 0.3);
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
-                inset 0 1px 1px rgba(255, 255, 255, 0.1);
-}
-
-.chooseImageSearchInput {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 2px solid rgba(153, 0, 255, 0.2);
-    background: linear-gradient(165deg, #1a1a1a, #242424);
-    color: #ffffff;
-    font-size: 15px;
-    letter-spacing: 0.3px;
-    outline: none;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3),
-                0 1px 1px rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
-}
-
-.chooseImageSearchInput::placeholder {
-    color: rgba(255, 255, 255, 0.3);
-    font-style: italic;
-}
-
-.chooseImageSearchInput:focus {
-    border-color: rgba(153, 0, 255, 0.8);
-    box-shadow: 0 0 15px rgba(153, 0, 255, 0.3),
-                inset 0 2px 4px rgba(0, 0, 0, 0.3);
-    transform: translateY(-1px);
-    background: linear-gradient(165deg, #1d1d1d, #282828);
+    background: var(--mc-panel-bg);
+    border: 1px solid var(--mc-border-green);
+    border-radius: 4px;
 }
 
 .chooseImageSearchDropdown {
     padding: 8px;
-    border-radius: 8px;
-    border: none;
-    background: linear-gradient(165deg, #1e1e1e, #262626);
+    border-radius: 4px;
+    border: 1px solid #333;
+    background: var(--mc-input-bg);
     color: #ffffff;
     width: 100%;
     max-height: 220px;
     overflow-y: auto;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4),
-                inset 0 1px 1px rgba(255, 255, 255, 0.05);
     scrollbar-width: thin;
-    scrollbar-color: rgba(153, 0, 255, 0.5) rgba(0, 0, 0, 0.2);
-}
-
-.chooseImageSearchDropdown::-webkit-scrollbar {
-    width: 8px;
-}
-
-.chooseImageSearchDropdown::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
-
-.chooseImageSearchDropdown::-webkit-scrollbar-thumb {
-    background: rgba(153, 0, 255, 0.5);
-    border-radius: 4px;
-    border: 2px solid rgba(0, 0, 0, 0.2);
+    scrollbar-color: var(--mc-border-green) var(--mc-card-bg);
 }
 
 .chooseImageSearchDropdown option {
-    background: transparent;
+    background: var(--mc-card-bg);
     color: #ffffff;
-    padding: 10px 12px;
-    margin: 2px 4px;
-    border-radius: 4px;
-    border: 1px solid transparent;
-    transition: all 0.2s ease;
+    padding: 8px;
+    margin: 2px 0;
+    border-radius: 2px;
 }
 
 .chooseImageSearchDropdown option:hover,
-.chooseImageSearchDropdown option:focus {
-    background: linear-gradient(135deg, rgba(153, 0, 255, 0.2), rgba(153, 0, 255, 0.1));
-    border-color: rgba(153, 0, 255, 0.3);
-}
-
+.chooseImageSearchDropdown option:focus,
 .chooseImageSearchDropdown option:checked {
-    background: linear-gradient(135deg, rgba(153, 0, 255, 0.8), rgba(153, 0, 255, 0.6));
-    border-color: rgba(153, 0, 255, 0.8);
+    background: var(--mc-btn-green);
 }
-/* ====== End Choose Image Search Styles ====== */
