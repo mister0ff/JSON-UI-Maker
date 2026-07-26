@@ -4,27 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JSON-UI Builder - Mobile Virtual Mouse</title>
+    <title>JSON-UI Builder</title>
     <link rel="stylesheet" href="style.css">
 
     <style>
         /* ===================================================
-           1. TRAVAMENTO DA TELA & ORIENTAÇÃO PAISAGEM (100% FIXA)
+           1. TRAVAMENTO DA TELA & ORIENTAÇÃO PAISAGEM (FIXA)
            =================================================== */
         html, body {
             width: 100vw;
             height: 100vh;
             margin: 0;
             padding: 0;
-            overflow: hidden !important; /* Desativa barras de rolagem */
-            touch-action: none !important; /* Desativa gestos nativos (zoom de pinça, swipe) */
-            user-select: none; /* Impede seleção indesejada de texto ao segurar */
+            overflow: hidden !important; /* Sem barras de rolagem */
+            touch-action: none !important; /* Bloqueia gestos nativos do navegador */
+            user-select: none; /* Bloqueia seleção acidental de texto */
             -webkit-user-select: none;
             background-color: #1e1e1e;
-            font-family: Arial, sans-serif;
         }
 
-        /* Se o celular estiver em pé (Portrait), força a rotação para deitado */
+        /* Força layout horizontal se o dispositivo estiver em pé (Portrait) */
         @media screen and (orientation: portrait) {
             #app-container {
                 transform: rotate(90deg);
@@ -45,57 +44,150 @@
             }
         }
 
-        /* Navbar e Layout Principal */
+        /* ===================================================
+           2. ESTILOS DA NAVBAR E APLICAÇÃO
+           =================================================== */
         .top-navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 60px;
+            min-height: 60px;
             background: linear-gradient(135deg, rgba(58, 58, 58, 0.95), rgba(0, 0, 0, 0.95));
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
             z-index: 999;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 15px;
+            padding: 8px 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .navbar-left,
+        .navbar-center,
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .navbar-center {
+            flex: 1;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .navbar-divider {
+            width: 1px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 5px;
+        }
+
+        .scale-control {
             display: flex;
-            gap: 8px;
             align-items: center;
         }
 
-        .navbar-preset-btn {
-            padding: 6px 12px;
-            border: none;
+        #undo-btn,
+        #redo-btn {
+            font-size: 13px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #444, #333);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 6px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        #undo-btn:hover:not(:disabled),
+        #redo-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #555, #444);
+            transform: translateY(-1px);
+        }
+
+        #undo-btn:disabled,
+        #redo-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .auth-status-inline {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(20, 20, 20, 0.6));
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .auth-status-inline span {
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .auth-status-inline button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        #authSignInBtn, #authSignUpBtn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
             color: white;
         }
 
-        .navbar-preset-btn.primary { background: #28a745; }
-        .navbar-preset-btn.secondary { background: #17a2b8; }
-        .navbar-preset-btn.tertiary { background: #6f42c1; }
-
-        .main {
-            margin-top: 60px;
-            height: calc(100vh - 60px);
-            display: flex;
+        #authLogoutBtn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
         }
 
-        .main_window {
-            flex: 1;
-            height: 100%;
-            background: #2b2b2b;
-            position: relative;
+        .navbar-preset-btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .navbar-preset-btn.primary {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+        }
+
+        .navbar-preset-btn.secondary {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+        }
+
+        .navbar-preset-btn.tertiary {
+            background: linear-gradient(135deg, #6f42c1, #5a32a3);
+            color: white;
+        }
+
+        .main {
+            margin-top: 70px;
+            height: calc(100vh - 70px);
         }
 
         /* ===================================================
-           2. ESTILO DO CURSOR VIRTUAL
+           3. ESTILO DO CURSOR VIRTUAL MOBILE
            =================================================== */
         #virtualCursor {
             position: fixed;
@@ -103,16 +195,15 @@
             left: 0;
             width: 24px;
             height: 24px;
-            pointer-events: none; /* O cursor em si não bloqueia cliques */
-            z-index: 99999;
-            display: none; /* Ativado via JS */
-            transform: translate(0, 0);
-            filter: drop-shadow(0px 2px 5px rgba(0,0,0,0.8));
+            pointer-events: none; /* Não bloqueia os cliques sob o cursor */
+            z-index: 100000;
+            display: none;
+            filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.8));
             transition: transform 0.05s ease-out;
         }
 
         #virtualCursor.active-click {
-            transform: scale(0.85); /* Efeito visual ao clicar */
+            transform: scale(0.85); /* Efeito visual ao pressionar */
         }
     </style>
 </head>
@@ -122,27 +213,193 @@
     <div id="app-container">
         <div class="top-navbar">
             <div class="navbar-left">
-                <span style="color: white; font-weight: bold;">JSON-UI Builder</span>
+                <div class="importers">
+                    <label class="ui_textures_importer">
+                        <input title="Import Textures" type="file" id="ui_textures_importer"
+                            onchange="Builder.handleUiTexturesUpload()" webkitdirectory directory multiple />
+                        Import Textures
+                    </label>
+
+                    <label class="form_importer">
+                        <input title="Upload Form" type="file" id="form_importer" onchange="Builder.uploadForm()" accept=".json" />
+                        Upload Form
+                    </label>
+                </div>
             </div>
 
             <div class="navbar-center">
-                <button class="navbar-preset-btn primary" onclick="saveProjectToStorage()">💾 Salvar</button>
-                <button class="navbar-preset-btn secondary" onclick="loadProjectFromStorage()">📂 Carregar</button>
-                <button class="navbar-preset-btn tertiary" id="toggleVirtualMouseBtn" onclick="toggleVirtualMouse()">🖱️ Mouse Virtual: OFF</button>
+                <div id="authStatus" class="auth-status-inline">
+                    <span id="authUserDisplay">Not signed in</span>
+                    <button id="authSignInBtn" onclick="Builder.openAuthModal(false)">Sign In</button>
+                    <button id="authSignUpBtn" onclick="Builder.openAuthModal(true)">Sign Up</button>
+                    <button id="authLogoutBtn" onclick="Builder.logout()" style="display: none;">Logout</button>
+                </div>
+
+                <button class="navbar-preset-btn primary" onclick="saveProjectToStorage()">💾 Save Project</button>
+                <button class="navbar-preset-btn secondary" onclick="loadProjectFromStorage()">📂 Load Project</button>
+                <button class="navbar-preset-btn tertiary" id="toggleVirtualMouseBtn" onclick="toggleVirtualMouse()">🖱️ Virtual Mouse: OFF</button>
+
+                <button id="presetUploadBtn" onclick="Builder.openUploadPresetModal()" style="display: none;" class="navbar-preset-btn primary">Upload Preset</button>
+                <button id="presetManagementBtn" onclick="Builder.openPresetManagementModal()" style="display: none;" class="navbar-preset-btn secondary">Manage Presets</button>
+                <button class="navbar-preset-btn tertiary" onclick="Builder.texturePresetsModal()">Preset Textures</button>
+
+                <div class="navbar-divider"></div>
+
+                <button class="modalSettingsBtn" id="modalSettingsBtn">
+                    <span class="settings_label">Settings</span>
+                    <img class="settings_img" src="icons/settings_cog.webp" alt="Settings">
+                </button>
+
+                <div class="scale-control">
+                    <label for="ui_scale_slider" style="color: white; font-size: 12px; margin-right: 5px;">Scale:</label>
+                    <input id="ui_scale_slider" type="range" min="10" max="100">
+                </div>
+
+                <button id="undo-btn" onclick="Builder.undo()" disabled title="Undo (Ctrl+Z)">↶ Undo</button>
+                <button id="redo-btn" onclick="Builder.redo()" disabled title="Redo (Ctrl+Y)">↷ Redo</button>
             </div>
 
             <div class="navbar-right">
                 <button class="navbar-preset-btn secondary" onclick="toggleFullScreen()">Fullscreen ⛶</button>
+                <img src="icons/help.webp" class="help_button" onclick="Builder.openHelpMenu()" alt="Help">
+                <a href="https://discord.gg/zqfNbYCcA9" class="discord_link" target="_blank">
+                    <img src="icons/discord.webp" class="discord_icon" alt="Discord">
+                </a>
+            </div>
+        </div>
+
+        <div id="modalSettings" class="modal">
+            <div class="modal-content">
+                <span id="modalSettingsClose" class="modalClose">&times;</span>
+                <h2 class="modalHeader">Settings</h2>
+                <div class="modalSettingsForm"></div>
+            </div>
+        </div>
+
+        <div id="modalAddButton" class="modal">
+            <div class="modal-content">
+                <span id="modalAddButtonClose" class="modalClose">&times;</span>
+                <h2 class="modalHeader">Add Button</h2>
+                <div class="modalAddButtonForm"></div>
+            </div>
+        </div>
+
+        <div id="modalCreateForm" class="modal">
+            <div class="modal-content">
+                <h2 class="modalHeader">Create Form</h2>
+                <div class="modalCreateFormForm"></div>
+            </div>
+        </div>
+
+        <div id="modalLoadTexturePresets" class="modal">
+            <div class="modal-content">
+                <span id="modalLoadTexturePresetsClose" class="modalClose">&times;</span>
+                <h2 class="modalHeader">Load Texture Presets</h2>
+                <div class="modalLoadTexturePresetsForm"></div>
+            </div>
+        </div>
+
+        <div id="modalHelpMenu" class="modal">
+            <div class="modal-content">
+                <span id="modalHelpMenuClose" class="modalClose">&times;</span>
+                <h2 class="modalHeader">Help</h2>
+                <div class="modalHelpMenuForm">
+                    <label style="font-weight: 500; color: rgb(255, 255, 255);">Key Binds:</label><br><br>
+                    <label class="modalOptionLabel">
+                        CTRL + c: <b>Copy</b><br>
+                        CTRL + v: <b>Paste</b><br>
+                        CTRL + x: <b>Cut</b><br>
+                        Tab: <b>Indent</b><br>
+                        Del: <b>Delete</b><br>
+                        Tab | Enter: <b>Autocomplete</b><br>
+                        Arrow Keys: <b>Move</b>
+                    </label><br><br><br>
+                    <label style="font-weight: 500; color: rgb(255, 255, 255); font-size: 20px;">General Issues:</label><br><br>
+                    <label style="font-weight: 500; color: rgb(255, 255, 255);">Why arent my buttons working in-game?</label><br><br>
+                    <label class="modalOptionLabel">You probably need to stack the button on top of a collection panel, if that doesnt fix it, check that all texture paths are correct</label><br><br>
+                    <label style="font-weight: 500; color: rgb(255, 255, 255);">Why isnt the form uploader working?</label><br><br>
+                    <label class="modalOptionLabel">The form uploader can only upload forms made by the website</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalChooseImage" class="modal">
+            <div class="modal-content">
+                <span id="modalChooseImageClose" class="modalClose">&times;</span>
+                <h2 class="modalHeader">Choose Image</h2>
+                <img src="icons/nineslice.webp" style="width: 20px; position: relative; top: 5px; left: 5px;" alt="Nineslice">
+                <label style="font-weight: 500; color: rgb(255, 255, 255);">: Nineslice Image</label>
+                <div class="modalChooseImageForm"></div>
             </div>
         </div>
 
         <div class="main">
-            <div class="main_window" id="main_window">
-                <p style="color: white; padding: 20px;">
-                    Tela travada e ajustada. Ative o <b>Mouse Virtual</b> no topo para controlar via toque!
-                </p>
+            <div class="buttons">
+                <div class="addElements">
+                    Elements:
+                    <button type="button" onclick="Builder.addPanel()">Add panel</button>
+                    <button type="button" onclick="Builder.openAddImageMenu()">Add image</button>
+                    <button type="button" onclick="Builder.addButton()">Add button</button>
+                    <button type="button" onclick="Builder.addCollectionPanel()">Add Collection Panel</button>
+                    <button type="button" onclick="Builder.addLabel()">Add Label</button>
+                    <button type="button" onclick="Builder.addScrollingPanel()">Add Scrolling Panel</button>
+                </div>
+
+                <div class="breaker"></div>
+
+                <div class="utilElements">
+                    <button class="utilElement" type="button" onclick="Builder.reset()">Reset <img style="width: 17px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/reset.webp" alt="Reset"> </button>
+                    <button class="utilElement" type="button" onclick="Builder.deleteSelected()">Delete Selected <img style="width: 20px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/bin.webp" alt="Delete"> </button>
+
+                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <div class="utilElement" style="width: 100%;">Form</div>
+                        <img class="utilElement" title="Copy" onclick="Builder.generateAndCopyJsonUI('copy')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/clipboard.webp" alt="Copy">
+                        <img class="utilElement" title="Download" onclick="Builder.generateAndCopyJsonUI('download')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/download.webp" alt="Download">
+                    </div>
+
+                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <div class="utilElement" style="width: 100%;">Server-Form</div>
+                        <img class="utilElement" title="Copy" onclick="Builder.downloadServerForm('copy')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/clipboard.webp" alt="Copy">
+                        <img class="utilElement" title="Download" onclick="Builder.downloadServerForm('download')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/download.webp" alt="Download">
+                    </div>
+                </div>
+
+                <div class="breaker"></div>
+
+                <div id="explorer" class="explorer"></div>
+            </div>
+
+            <div class="main_window_outline">
+                <div class="main_window" id="main_window">
+                    <img title="Background" src="background.png" width="100%" height="100%" class="bg_image" id="bg_image" alt="Background">
+                </div>
+            </div>
+
+            <div class="scripter">
+                <div class="scripter_title_label">Script</div>
+                <div style="color: rgb(139, 139, 139);">For Fixed Collection Index Forms Only</div>
+                <div class="scripter_buttons">
+                    <button class="generate_js_scripter" id="generate_js_scripter">Copy <img style="width: 18px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/js.webp" alt="JavaScript"> To Clipboard</button>
+                    <button class="generate_ts_scripter" id="generate_ts_scripter">Copy <img style="width: 18px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/ts.webp" alt="TypeScript"> To Clipboard</button>
+                </div>
+
+                <br><br><br>
+
+                <div class="scripter_title_label">Bindings</div>
+                <div style="color: rgb(139, 139, 139);">Advanced Feature</div>
+                <div id="errorMessage" title="Default Error Message" style="visibility: hidden; color: #7e0000;">Warnings ⚠️</div>
+                <textarea spellcheck="false" readonly class="bindings" id="bindings"></textarea>
+
+                <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                    <div style="font-size: 20px; color: rgb(39, 165, 255);">TAB</div>&nbsp To indent
+                    <div onclick="Builder.formatBindingsArea()" style="position: relative; margin-left: 15px; cursor: pointer;" class="utilElement">Format <img style="width: 20px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/curly_brackets.webp" alt="Format"></div>
+                </div>
             </div>
         </div>
+
+        <div id="properties" class="properties"></div>
+        <div id="notif-container"></div>
+        <div id="mainWarningMessage"></div>
     </div>
 
     <div id="virtualCursor">
@@ -151,8 +408,10 @@
         </svg>
     </div>
 
+    <script src="./dist/index.js" type="module"></script>
+
     <script>
-        // --- TELA CHEIA E ORIENTAÇÃO ---
+        // --- 1. TELA CHEIA ---
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(() => {});
@@ -164,12 +423,52 @@
             }
         }
 
-        // --- SISTEMA DE MOUSE VIRTUAL MOBILE 100% ---
+        // --- 2. SALVAR E CARREGAR PROJETO NO LOCALSTORAGE ---
+        function saveProjectToStorage() {
+            try {
+                const projectData = {
+                    elements: (typeof Builder !== 'undefined') ? (Builder.elements || Builder.projectData || null) : null,
+                    bindings: document.getElementById('bindings')?.value || "",
+                    timestamp: new Date().toISOString()
+                };
+
+                localStorage.setItem('json_ui_saved_project', JSON.stringify(projectData));
+                alert('✅ Projeto salvo com sucesso!');
+            } catch (err) {
+                console.error("Erro ao salvar:", err);
+                alert('⚠️ Ocorreu um erro ao salvar o projeto.');
+            }
+        }
+
+        function loadProjectFromStorage() {
+            try {
+                const savedData = localStorage.getItem('json_ui_saved_project');
+                if (!savedData) {
+                    alert('ℹ️ Nenhum projeto salvo encontrado.');
+                    return;
+                }
+
+                const parsed = JSON.parse(savedData);
+                if (parsed.bindings && document.getElementById('bindings')) {
+                    document.getElementById('bindings').value = parsed.bindings;
+                }
+
+                if (parsed.elements && typeof Builder !== 'undefined' && Builder.loadProject) {
+                    Builder.loadProject(parsed.elements);
+                }
+                
+                alert('✅ Projeto carregado!');
+            } catch (err) {
+                console.error("Erro ao carregar:", err);
+                alert('⚠️ Erro ao carregar o projeto.');
+            }
+        }
+
+        // --- 3. MOUSE VIRTUAL 100% PARA MOBILE ---
         let virtualMouseActive = false;
         const cursor = document.getElementById('virtualCursor');
         const btnToggle = document.getElementById('toggleVirtualMouseBtn');
 
-        // Variáveis de controle de toques
         let lastTapTime = 0;
         let holdTimer = null;
         let isHolding = false;
@@ -181,13 +480,13 @@
             
             if (virtualMouseActive) {
                 cursor.style.display = 'block';
-                btnToggle.innerText = '🖱️ Mouse Virtual: ON';
-                btnToggle.style.background = '#28a745';
+                btnToggle.innerText = '🖱️ Virtual Mouse: ON';
+                btnToggle.style.background = 'linear-gradient(135deg, #28a745, #218838)';
                 updateCursorPosition(cursorX, cursorY);
             } else {
                 cursor.style.display = 'none';
-                btnToggle.innerText = '🖱️ Mouse Virtual: OFF';
-                btnToggle.style.background = '#6f42c1';
+                btnToggle.innerText = '🖱️ Virtual Mouse: OFF';
+                btnToggle.style.background = 'linear-gradient(135deg, #6f42c1, #5a32a3)';
             }
         }
 
@@ -198,7 +497,6 @@
             cursor.style.top = y + 'px';
         }
 
-        // Simula eventos nativos do mouse no elemento sob o ponteiro
         function dispatchMouseEvent(type, button = 0) {
             const targetElement = document.elementFromPoint(cursorX, cursorY);
             if (!targetElement) return;
@@ -214,7 +512,6 @@
             targetElement.dispatchEvent(mouseEvt);
         }
 
-        // --- MANIPULAÇÃO DE GESTOS POR TOQUE ---
         document.addEventListener('touchstart', (e) => {
             if (!virtualMouseActive || e.touches.length === 0) return;
 
@@ -222,14 +519,12 @@
             updateCursorPosition(touch.clientX, touch.clientY);
             cursor.classList.add('active-click');
 
-            // Detectar Segurar (Long Press = Clique Secundário / Direito ou Hold)
             isHolding = false;
             holdTimer = setTimeout(() => {
                 isHolding = true;
-                dispatchMouseEvent('contextmenu', 2); // Clique Direito / Menu de Contexto
+                dispatchMouseEvent('contextmenu', 2);
                 dispatchMouseEvent('mousedown', 2);
-            }, 500); // 500ms segurando
-
+            }, 500);
         }, { passive: false });
 
         document.addEventListener('touchmove', (e) => {
@@ -238,7 +533,6 @@
             const touch = e.touches[0];
             updateCursorPosition(touch.clientX, touch.clientY);
 
-            // Se moveu, cancela a detecção de "segurar"
             clearTimeout(holdTimer);
             dispatchMouseEvent('mousemove');
         }, { passive: false });
@@ -257,37 +551,16 @@
             const currentTime = new Date().getTime();
             const tapLength = currentTime - lastTapTime;
 
-            // Envia clique normal (Left Click)
             dispatchMouseEvent('mousedown', 0);
             dispatchMouseEvent('mouseup', 0);
             dispatchMouseEvent('click', 0);
 
-            // Detectar Duplo Toque (Duplo Clique)
             if (tapLength < 300 && tapLength > 0) {
                 dispatchMouseEvent('dblclick', 0);
             }
 
             lastTapTime = currentTime;
         }, { passive: false });
-
-        // --- SALVAR E CARREGAR PROJETO NO LOCALSTORAGE ---
-        function saveProjectToStorage() {
-            const projectData = {
-                bindings: document.getElementById('bindings')?.value || "",
-                timestamp: new Date().toISOString()
-            };
-            localStorage.setItem('json_ui_saved_project', JSON.stringify(projectData));
-            alert('✅ Projeto salvo com sucesso!');
-        }
-
-        function loadProjectFromStorage() {
-            const savedData = localStorage.getItem('json_ui_saved_project');
-            if (!savedData) {
-                alert('ℹ️ Nenhum projeto salvo encontrado.');
-                return;
-            }
-            alert('✅ Projeto carregado com sucesso!');
-        }
     </script>
 </body>
 
