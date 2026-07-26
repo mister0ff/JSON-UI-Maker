@@ -17,15 +17,14 @@
             height: 100vh;
             margin: 0;
             padding: 0;
-            overflow: hidden !important; /* Trava a rolagem principal da página */
+            overflow: hidden !important;
             touch-action: none !important;
             display: flex;
             flex-direction: column;
         }
 
-        /* Encaixa a barra superior sem estourar altura */
         .top-navbar {
-            position: relative !important; /* Mudado de fixed para relative para não cobrir o conteúdo */
+            position: relative !important;
             top: 0;
             left: 0;
             right: 0;
@@ -44,9 +43,8 @@
             flex-shrink: 0;
         }
 
-        /* O container principal ocupa exatamente o restante da tela */
         .main {
-            margin-top: 0 !important; /* Remove a margem fixa */
+            margin-top: 0 !important;
             flex: 1;
             display: flex;
             flex-direction: row;
@@ -56,10 +54,9 @@
             position: relative;
         }
 
-        /* PAINEL DA ESQUERDA: Adicionado rolagem (Scroll) caso o conteúdo não caiba */
         .buttons {
             height: 100%;
-            overflow-y: auto !important; /* Permite rolar os botões e elementos */
+            overflow-y: auto !important;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
@@ -68,7 +65,6 @@
             flex-shrink: 0;
         }
 
-        /* PAINEL DA DIREITA: Adicionado rolagem (Scroll) */
         .scripter {
             height: 100%;
             overflow-y: auto !important;
@@ -77,7 +73,6 @@
             flex-shrink: 0;
         }
 
-        /* ÁREA CENTRAL (CANVAS): Encaixa dinamicamente no espaço que sobra */
         .main_window_outline {
             flex: 1;
             height: 100%;
@@ -91,9 +86,11 @@
         .main_window {
             max-width: 100%;
             max-height: 100%;
+            /* A transição suave para quando o scale for alterado */
+            transition: transform 0.1s ease-out; 
+            transform-origin: center center;
         }
 
-        /* Cursor Virtual */
         #virtualCursor {
             position: fixed;
             top: 0;
@@ -157,7 +154,7 @@
 
             <div class="scale-control">
                 <label for="ui_scale_slider" style="color: white; font-size: 12px; margin-right: 5px;">Scale:</label>
-                <input id="ui_scale_slider" type="range" min="10" max="100">
+                <input id="ui_scale_slider" type="range" min="10" max="200" value="100">
             </div>
 
             <button id="undo-btn" onclick="Builder.undo()" disabled title="Undo (Ctrl+Z)">↶ Undo</button>
@@ -172,55 +169,20 @@
         </div>
     </div>
 
-    <div id="modalSettings" class="modal">
-        <div class="modal-content">
-            <span id="modalSettingsClose" class="modalClose">&times;</span>
-            <h2 class="modalHeader">Settings</h2>
-            <div class="modalSettingsForm"></div>
-        </div>
-    </div>
-    <div id="modalAddButton" class="modal">
-        <div class="modal-content">
-            <span id="modalAddButtonClose" class="modalClose">&times;</span>
-            <h2 class="modalHeader">Add Button</h2>
-            <div class="modalAddButtonForm"></div>
-        </div>
-    </div>
-    <div id="modalCreateForm" class="modal">
-        <div class="modal-content">
-            <h2 class="modalHeader">Create Form</h2>
-            <div class="modalCreateFormForm"></div>
-        </div>
-    </div>
-    <div id="modalLoadTexturePresets" class="modal">
-        <div class="modal-content">
-            <span id="modalLoadTexturePresetsClose" class="modalClose">&times;</span>
-            <h2 class="modalHeader">Load Texture Presets</h2>
-            <div class="modalLoadTexturePresetsForm"></div>
-        </div>
-    </div>
+    <div id="modalSettings" class="modal"><div class="modal-content"><span id="modalSettingsClose" class="modalClose">&times;</span><h2 class="modalHeader">Settings</h2><div class="modalSettingsForm"></div></div></div>
+    <div id="modalAddButton" class="modal"><div class="modal-content"><span id="modalAddButtonClose" class="modalClose">&times;</span><h2 class="modalHeader">Add Button</h2><div class="modalAddButtonForm"></div></div></div>
+    <div id="modalCreateForm" class="modal"><div class="modal-content"><h2 class="modalHeader">Create Form</h2><div class="modalCreateFormForm"></div></div></div>
+    <div id="modalLoadTexturePresets" class="modal"><div class="modal-content"><span id="modalLoadTexturePresetsClose" class="modalClose">&times;</span><h2 class="modalHeader">Load Texture Presets</h2><div class="modalLoadTexturePresetsForm"></div></div></div>
     <div id="modalHelpMenu" class="modal">
         <div class="modal-content">
             <span id="modalHelpMenuClose" class="modalClose">&times;</span>
             <h2 class="modalHeader">Help</h2>
             <div class="modalHelpMenuForm">
                 <label style="font-weight: 500; color: rgb(255, 255, 255);">Key Binds:</label><br><br>
-
-                <label class="modalOptionLabel">
-                    CTRL + c: <b>Copy</b><br>
-                    CTRL + v: <b>Paste</b><br>
-                    CTRL + x: <b>Cut</b><br>
-                    Tab: <b>Indent</b><br>
-                    Del: <b>Delete</b><br>
-                    Tab | Enter: <b>Autocomplete</b><br>
-                    Arrow Keys: <b>Move</b>
-                </label><br><br><br>
-
+                <label class="modalOptionLabel">CTRL + c: <b>Copy</b><br>CTRL + v: <b>Paste</b><br>CTRL + x: <b>Cut</b><br>Tab: <b>Indent</b><br>Del: <b>Delete</b><br>Tab | Enter: <b>Autocomplete</b><br>Arrow Keys: <b>Move</b></label><br><br><br>
                 <label style="font-weight: 500; color: rgb(255, 255, 255); font-size: 20px;">General Issues:</label><br><br>
-
                 <label style="font-weight: 500; color: rgb(255, 255, 255);">Why arent my buttons working in-game?</label><br><br>
                 <label class="modalOptionLabel">You probably need to stack the button on top of a collection panel, if that doesnt fix it, check that all texture paths are correct</label><br><br>
-
                 <label style="font-weight: 500; color: rgb(255, 255, 255);">Why isnt the form uploader working?</label><br><br>
                 <label class="modalOptionLabel">The form uploader can only upload forms made by the website</label>
             </div>
@@ -235,6 +197,7 @@
             <div class="modalChooseImageForm"></div>
         </div>
     </div>
+
     <div class="main">
         <div class="buttons">
             <div class="addElements">
@@ -250,41 +213,24 @@
             <div class="breaker"></div>
 
             <div class="utilElements">
-                <button class="utilElement" type="button" onclick="Builder.reset()">Reset <img
-                        style="width: 17px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);"
-                        src="icons/reset.webp" alt="Reset"> </button>
-                <button class="utilElement" type="button" onclick="Builder.deleteSelected()">Delete Selected <img
-                        style="width: 20px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);"
-                        src="icons/bin.webp" alt="Delete"> </button>
+                <button class="utilElement" type="button" onclick="Builder.reset()">Reset <img style="width: 17px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/reset.webp" alt="Reset"> </button>
+                <button class="utilElement" type="button" onclick="Builder.deleteSelected()">Delete Selected <img style="width: 20px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/bin.webp" alt="Delete"> </button>
 
                 <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
                     <div class="utilElement" style="width: 100%;">Form</div>
-
-                    <img class="utilElement" title="Copy" onclick="Builder.generateAndCopyJsonUI('copy')"
-                        style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;"
-                        src="icons/clipboard.webp" alt="Copy">
-                    <img class="utilElement" title="Download" onclick="Builder.generateAndCopyJsonUI('download')"
-                        style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;"
-                        src="icons/download.webp" alt="Download">
+                    <img class="utilElement" title="Copy" onclick="Builder.generateAndCopyJsonUI('copy')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/clipboard.webp" alt="Copy">
+                    <img class="utilElement" title="Download" onclick="Builder.generateAndCopyJsonUI('download')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/download.webp" alt="Download">
                 </div>
 
                 <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
                     <div class="utilElement" style="width: 100%;">Server-Form</div>
-
-                    <img class="utilElement" title="Copy" onclick="Builder.downloadServerForm('copy')"
-                        style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;"
-                        src="icons/clipboard.webp" alt="Copy">
-                    <img class="utilElement" title="Download" onclick="Builder.downloadServerForm('download')"
-                        style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;"
-                        src="icons/download.webp" alt="Download">
+                    <img class="utilElement" title="Copy" onclick="Builder.downloadServerForm('copy')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/clipboard.webp" alt="Copy">
+                    <img class="utilElement" title="Download" onclick="Builder.downloadServerForm('download')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/download.webp" alt="Download">
                 </div>
-
             </div>
 
             <div class="breaker"></div>
-
             <div id="explorer" class="explorer"></div>
-
         </div>
 
         <div class="main_window_outline">
@@ -295,15 +241,10 @@
 
         <div class="scripter">
             <div class="scripter_title_label">Script</div>
-
             <div style="color: rgb(139, 139, 139);">For Fixed Collection Index Forms Only</div>
             <div class="scripter_buttons">
-                <button class="generate_js_scripter" id="generate_js_scripter">Copy <img
-                        style="width: 18px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);"
-                        src="icons/js.webp" alt="JavaScript"> To Clipboard</button>
-                <button class="generate_ts_scripter" id="generate_ts_scripter">Copy <img
-                        style="width: 18px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);"
-                        src="icons/ts.webp" alt="TypeScript"> To Clipboard</button>
+                <button class="generate_js_scripter" id="generate_js_scripter">Copy <img style="width: 18px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/js.webp" alt="JavaScript"> To Clipboard</button>
+                <button class="generate_ts_scripter" id="generate_ts_scripter">Copy <img style="width: 18px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/ts.webp" alt="TypeScript"> To Clipboard</button>
             </div>
 
             <br><br><br>
@@ -315,18 +256,13 @@
 
             <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
                 <div style="font-size: 20px; color: rgb(39, 165, 255);">TAB</div>&nbsp To indent
-                <div onclick="Builder.formatBindingsArea()" style="position: relative; margin-left: 15px; cursor: pointer;"
-                    class="utilElement">Format <img
-                        style="width: 20px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);"
-                        src="icons/curly_brackets.webp" alt="Format"></div>
+                <div onclick="Builder.formatBindingsArea()" style="position: relative; margin-left: 15px; cursor: pointer;" class="utilElement">Format <img style="width: 20px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/curly_brackets.webp" alt="Format"></div>
             </div>
         </div>
     </div>
 
     <div id="properties" class="properties"></div>
-
     <div id="notif-container"></div>
-
     <div id="mainWarningMessage"></div>
 
     <div id="virtualCursor">
@@ -338,166 +274,36 @@
     <script src="./dist/index.js" type="module"></script>
 
     <style>
-        .navbar-left,
-        .navbar-center,
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .navbar-left, .navbar-center, .navbar-right { display: flex; align-items: center; gap: 10px; }
+        .navbar-center { flex: 1; justify-content: center; flex-wrap: wrap; gap: 10px; }
+        .navbar-divider { width: 1px; height: 30px; background: rgba(255, 255, 255, 0.2); margin: 0 5px; }
+        .navbar-right { gap: 15px; }
+        .scale-control { display: flex; align-items: center; }
 
-        .navbar-center {
-            flex: 1;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
+        #undo-btn, #redo-btn {
+            font-size: 13px; padding: 8px 12px; background: linear-gradient(135deg, #444, #333);
+            color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap;
         }
+        #undo-btn:hover:not(:disabled), #redo-btn:hover:not(:disabled) { background: linear-gradient(135deg, #555, #444); transform: translateY(-1px); }
+        #undo-btn:disabled, #redo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .navbar-divider {
-            width: 1px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 0 5px;
-        }
+        .auth-status-inline { display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(20, 20, 20, 0.6)); padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.15); }
+        .auth-status-inline span { color: white; font-size: 12px; font-weight: 500; white-space: nowrap; }
+        .auth-status-inline button { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 11px; font-weight: 600; transition: all 0.3s ease; white-space: nowrap; }
+        #authSignInBtn, #authSignUpBtn { background: linear-gradient(135deg, #007bff, #0056b3); color: white; }
+        #authSignInBtn:hover, #authSignUpBtn:hover { background: linear-gradient(135deg, #0056b3, #004085); transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3); }
+        #authLogoutBtn { background: linear-gradient(135deg, #dc3545, #c82333); color: white; }
+        #authLogoutBtn:hover { background: linear-gradient(135deg, #c82333, #bd2130); transform: translateY(-1px); box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3); }
 
-        .navbar-right {
-            gap: 15px;
-        }
+        .navbar-preset-btn { padding: 8px 14px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.3s ease; white-space: nowrap; }
+        .navbar-preset-btn.primary { background: linear-gradient(135deg, #28a745, #218838); color: white; }
+        .navbar-preset-btn.primary:hover { background: linear-gradient(135deg, #218838, #1e7e34); transform: translateY(-1px); box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3); }
+        .navbar-preset-btn.secondary { background: linear-gradient(135deg, #17a2b8, #138496); color: white; }
+        .navbar-preset-btn.secondary:hover { background: linear-gradient(135deg, #138496, #117a8b); transform: translateY(-1px); box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3); }
+        .navbar-preset-btn.tertiary { background: linear-gradient(135deg, #6f42c1, #5a32a3); color: white; }
+        .navbar-preset-btn.tertiary:hover { background: linear-gradient(135deg, #5a32a3, #4c2a8a); transform: translateY(-1px); box-shadow: 0 4px 8px rgba(111, 66, 193, 0.3); }
 
-        .scale-control {
-            display: flex;
-            align-items: center;
-        }
-
-        #undo-btn,
-        #redo-btn {
-            font-size: 13px;
-            padding: 8px 12px;
-            background: linear-gradient(135deg, #444, #333);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        #undo-btn:hover:not(:disabled),
-        #redo-btn:hover:not(:disabled) {
-            background: linear-gradient(135deg, #555, #444);
-            transform: translateY(-1px);
-        }
-
-        #undo-btn:disabled,
-        #redo-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Authentication Status - Inline in navbar */
-        .auth-status-inline {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(20, 20, 20, 0.6));
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .auth-status-inline span {
-            color: white;
-            font-size: 12px;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .auth-status-inline button {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        #authSignInBtn,
-        #authSignUpBtn {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-        }
-
-        #authSignInBtn:hover,
-        #authSignUpBtn:hover {
-            background: linear-gradient(135deg, #0056b3, #004085);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
-        }
-
-        #authLogoutBtn {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-            color: white;
-        }
-
-        #authLogoutBtn:hover {
-            background: linear-gradient(135deg, #c82333, #bd2130);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
-        }
-
-        /* Preset buttons in navbar */
-        .navbar-preset-btn {
-            padding: 8px 14px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .navbar-preset-btn.primary {
-            background: linear-gradient(135deg, #28a745, #218838);
-            color: white;
-        }
-
-        .navbar-preset-btn.primary:hover {
-            background: linear-gradient(135deg, #218838, #1e7e34);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
-        }
-
-        .navbar-preset-btn.secondary {
-            background: linear-gradient(135deg, #17a2b8, #138496);
-            color: white;
-        }
-
-        .navbar-preset-btn.secondary:hover {
-            background: linear-gradient(135deg, #138496, #117a8b);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
-        }
-
-        .navbar-preset-btn.tertiary {
-            background: linear-gradient(135deg, #6f42c1, #5a32a3);
-            color: white;
-        }
-
-        .navbar-preset-btn.tertiary:hover {
-            background: linear-gradient(135deg, #5a32a3, #4c2a8a);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(111, 66, 193, 0.3);
-        }
-
-        /* Adjustments */
-        @media (max-width: 1200px) {
-            .auth-status-inline span {
-                display: none;
-            }
-        }
+        @media (max-width: 1200px) { .auth-status-inline span { display: none; } }
     </style>
 
     <script>
@@ -651,6 +457,20 @@
 
             lastTapTime = currentTime;
         }, { passive: false });
+
+        // 4. SISTEMA DE SCALE (ZOOM IN / ZOOM OUT) DA TELA PRINCIPAL
+        document.addEventListener('DOMContentLoaded', () => {
+            const scaleSlider = document.getElementById('ui_scale_slider');
+            const mainWindow = document.getElementById('main_window');
+
+            if (scaleSlider && mainWindow) {
+                // Ao mexer no slider, ajusta o CSS "transform: scale"
+                scaleSlider.addEventListener('input', function() {
+                    const scaleValue = this.value / 100; // Divide por 100 para converter ex: 150 em 1.5
+                    mainWindow.style.transform = `scale(${scaleValue})`;
+                });
+            }
+        });
     </script>
 </body>
 
