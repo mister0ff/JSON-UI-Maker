@@ -8,15 +8,92 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         html, body {
             width: 100vw;
             height: 100vh;
             margin: 0;
             padding: 0;
-            overflow: hidden !important; /* Tela fixa */
-            touch-action: none !important; /* Sem gestos de rolagem */
+            overflow: hidden !important; /* Trava a rolagem principal da página */
+            touch-action: none !important;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* Encaixa a barra superior sem estourar altura */
+        .top-navbar {
+            position: relative !important; /* Mudado de fixed para relative para não cobrir o conteúdo */
+            top: 0;
+            left: 0;
+            right: 0;
+            min-height: 50px;
+            max-height: 120px;
+            background: linear-gradient(135deg, rgba(58, 58, 58, 0.95), rgba(0, 0, 0, 0.95));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* O container principal ocupa exatamente o restante da tela */
+        .main {
+            margin-top: 0 !important; /* Remove a margem fixa */
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            height: calc(100vh - 50px);
+            width: 100vw;
+            overflow: hidden !important;
+            position: relative;
+        }
+
+        /* PAINEL DA ESQUERDA: Adicionado rolagem (Scroll) caso o conteúdo não caiba */
+        .buttons {
+            height: 100%;
+            overflow-y: auto !important; /* Permite rolar os botões e elementos */
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+            flex-shrink: 0;
+        }
+
+        /* PAINEL DA DIREITA: Adicionado rolagem (Scroll) */
+        .scripter {
+            height: 100%;
+            overflow-y: auto !important;
+            overflow-x: hidden;
+            padding: 10px;
+            flex-shrink: 0;
+        }
+
+        /* ÁREA CENTRAL (CANVAS): Encaixa dinamicamente no espaço que sobra */
+        .main_window_outline {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .main_window {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        /* Cursor Virtual */
         #virtualCursor {
             position: fixed;
             top: 0;
@@ -261,25 +338,6 @@
     <script src="./dist/index.js" type="module"></script>
 
     <style>
-        /* Top Navigation Bar */
-        .top-navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            min-height: 60px;
-            background-color: linear-gradient(135deg, rgb(58, 58, 58, 0.95), rgb(0, 0, 0, 0.95));
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            z-index: 999;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 15px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
         .navbar-left,
         .navbar-center,
         .navbar-right {
@@ -434,44 +492,10 @@
             box-shadow: 0 4px 8px rgba(111, 66, 193, 0.3);
         }
 
-        /* Adjust main content to account for navbar */
-        .main {
-            margin-top: 70px;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 1600px) {
-            .navbar-center {
-                max-width: none;
-            }
-        }
-
+        /* Adjustments */
         @media (max-width: 1200px) {
             .auth-status-inline span {
                 display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .top-navbar {
-                flex-direction: column;
-                padding: 10px;
-            }
-
-            .navbar-left,
-            .navbar-center,
-            .navbar-right {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            .navbar-divider {
-                display: none;
-            }
-
-            .main {
-                margin-top: 160px;
             }
         }
     </style>
