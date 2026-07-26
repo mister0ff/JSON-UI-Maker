@@ -4,26 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JSON-UI Builder</title>
+    <title>JSON-UI Builder - Mobile Fixed Edition</title>
     <link rel="stylesheet" href="style.css">
 
     <style>
         /* ===================================================
-           1. TRAVAMENTO DA TELA & ORIENTAÇÃO PAISAGEM (FIXA)
+           1. TRAVAMENTO E AJUSTE DA TELA (100% VISÍVEL)
            =================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         html, body {
             width: 100vw;
             height: 100vh;
-            margin: 0;
-            padding: 0;
-            overflow: hidden !important; /* Sem barras de rolagem */
+            overflow: hidden !important; /* Sem barras de rolagem globais */
             touch-action: none !important; /* Bloqueia gestos nativos do navegador */
-            user-select: none; /* Bloqueia seleção acidental de texto */
+            user-select: none;
             -webkit-user-select: none;
-            background-color: #1e1e1e;
+            background-color: #121212;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
         }
 
-        /* Força layout horizontal se o dispositivo estiver em pé (Portrait) */
+        #app-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Rotação visual caso o celular esteja em pé */
         @media screen and (orientation: portrait) {
             #app-container {
                 transform: rotate(90deg);
@@ -36,174 +50,284 @@
             }
         }
 
-        @media screen and (orientation: landscape) {
-            #app-container {
-                width: 100vw;
-                height: 100vh;
-                position: relative;
-            }
-        }
-
         /* ===================================================
-           2. ESTILOS DA NAVBAR E APLICAÇÃO
+           2. NAVBAR MODERNA E COMPACTA
            =================================================== */
         .top-navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            min-height: 60px;
-            background: linear-gradient(135deg, rgba(58, 58, 58, 0.95), rgba(0, 0, 0, 0.95));
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            z-index: 999;
+            height: 50px;
+            background: linear-gradient(135deg, #1f1f1f, #111111);
+            border-bottom: 1px solid #333;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 15px;
-            flex-wrap: wrap;
-            gap: 10px;
+            padding: 0 10px;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
-        .navbar-left,
-        .navbar-center,
-        .navbar-right {
+        .navbar-left, .navbar-center, .navbar-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
         }
 
-        .navbar-center {
-            flex: 1;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .navbar-divider {
-            width: 1px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 0 5px;
-        }
-
-        .scale-control {
-            display: flex;
-            align-items: center;
-        }
-
-        #undo-btn,
-        #redo-btn {
-            font-size: 13px;
-            padding: 8px 12px;
-            background: linear-gradient(135deg, #444, #333);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
+        .importers label {
+            background: #2a2a2a;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 11px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
+            border: 1px solid #444;
         }
 
-        #undo-btn:hover:not(:disabled),
-        #redo-btn:hover:not(:disabled) {
-            background: linear-gradient(135deg, #555, #444);
-            transform: translateY(-1px);
-        }
-
-        #undo-btn:disabled,
-        #redo-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .importers input {
+            display: none;
         }
 
         .auth-status-inline {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(20, 20, 20, 0.6));
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .auth-status-inline span {
-            color: white;
-            font-size: 12px;
-            font-weight: 500;
-            white-space: nowrap;
+            gap: 6px;
+            background: #181818;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            font-size: 11px;
         }
 
         .auth-status-inline button {
-            padding: 6px 12px;
+            padding: 3px 8px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: bold;
+            background: #007bff;
+            color: white;
+        }
+
+        .navbar-preset-btn {
+            padding: 5px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 11px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            color: white;
+            transition: opacity 0.2s;
             white-space: nowrap;
         }
 
-        #authSignInBtn, #authSignUpBtn {
-            background: linear-gradient(135deg, #007bff, #0056b3);
+        .navbar-preset-btn:hover { opacity: 0.85; }
+        .navbar-preset-btn.primary { background: #28a745; }
+        .navbar-preset-btn.secondary { background: #17a2b8; }
+        .navbar-preset-btn.tertiary { background: #6f42c1; }
+
+        .scale-control {
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        #ui_scale_slider {
+            width: 60px;
+        }
+
+        #undo-btn, #redo-btn {
+            padding: 4px 8px;
+            background: #333;
             color: white;
-        }
-
-        #authLogoutBtn {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-            color: white;
-        }
-
-        .navbar-preset-btn {
-            padding: 8px 14px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .navbar-preset-btn.primary {
-            background: linear-gradient(135deg, #28a745, #218838);
-            color: white;
-        }
-
-        .navbar-preset-btn.secondary {
-            background: linear-gradient(135deg, #17a2b8, #138496);
-            color: white;
-        }
-
-        .navbar-preset-btn.tertiary {
-            background: linear-gradient(135deg, #6f42c1, #5a32a3);
-            color: white;
-        }
-
-        .main {
-            margin-top: 70px;
-            height: calc(100vh - 70px);
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-size: 11px;
         }
 
         /* ===================================================
-           3. ESTILO DO CURSOR VIRTUAL MOBILE
+           3. LAYOUT PRINCIPAL (LAYOUT REORGANIZADO E VISÍVEL)
+           =================================================== */
+        .main {
+            flex: 1;
+            display: flex;
+            height: calc(100vh - 50px);
+            overflow: hidden;
+            background-color: #1a1a1a;
+        }
+
+        /* Painel Lateral Esquerdo */
+        .buttons {
+            width: 200px;
+            background: #222222;
+            border-right: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            gap: 8px;
+            overflow-y: auto; /* Permite rolagem interna no painel se necessário */
+            flex-shrink: 0;
+        }
+
+        .addElements button, .utilElements button {
+            width: 100%;
+            padding: 6px;
+            margin-top: 4px;
+            background: #333;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .addElements button:hover, .utilElements button:hover {
+            background: #444;
+        }
+
+        .breaker {
+            height: 1px;
+            background: #333;
+            margin: 4px 0;
+        }
+
+        .explorer {
+            flex: 1;
+            background: #181818;
+            border: 1px solid #333;
+            border-radius: 4px;
+            min-height: 100px;
+            overflow-y: auto;
+        }
+
+        /* Área Central (Canvas / Tela do Projeto) */
+        .main_window_outline {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #141414;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main_window {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            background: #2b2b2b;
+            border: 1px dashed #555;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bg_image {
+            object-fit: contain;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Painel Lateral Direito (Script / Bindings) */
+        .scripter {
+            width: 220px;
+            background: #222222;
+            border-left: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            gap: 6px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .scripter_title_label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .scripter_buttons button {
+            width: 100%;
+            padding: 5px;
+            margin-top: 4px;
+            background: #2d2d2d;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .bindings {
+            width: 100%;
+            height: 120px;
+            background: #111;
+            color: #00ff66;
+            border: 1px solid #333;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 11px;
+            padding: 4px;
+            resize: none;
+        }
+
+        /* ===================================================
+           4. CURSOR VIRTUAL
            =================================================== */
         #virtualCursor {
             position: fixed;
             top: 0;
             left: 0;
-            width: 24px;
-            height: 24px;
-            pointer-events: none; /* Não bloqueia os cliques sob o cursor */
-            z-index: 100000;
+            width: 22px;
+            height: 22px;
+            pointer-events: none;
+            z-index: 999999;
             display: none;
-            filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.8));
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.9));
             transition: transform 0.05s ease-out;
         }
 
         #virtualCursor.active-click {
-            transform: scale(0.85); /* Efeito visual ao pressionar */
+            transform: scale(0.8);
+        }
+
+        /* Modais estilizados */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #252525;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modalClose {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            color: #aaa;
         }
     </style>
 </head>
@@ -215,195 +339,91 @@
             <div class="navbar-left">
                 <div class="importers">
                     <label class="ui_textures_importer">
-                        <input title="Import Textures" type="file" id="ui_textures_importer"
-                            onchange="Builder.handleUiTexturesUpload()" webkitdirectory directory multiple />
-                        Import Textures
+                        <input type="file" id="ui_textures_importer" onchange="Builder.handleUiTexturesUpload()" webkitdirectory directory multiple />
+                        Textures
                     </label>
 
                     <label class="form_importer">
-                        <input title="Upload Form" type="file" id="form_importer" onchange="Builder.uploadForm()" accept=".json" />
-                        Upload Form
+                        <input type="file" id="form_importer" onchange="Builder.uploadForm()" accept=".json" />
+                        Upload
                     </label>
                 </div>
             </div>
 
             <div class="navbar-center">
                 <div id="authStatus" class="auth-status-inline">
-                    <span id="authUserDisplay">Not signed in</span>
+                    <span id="authUserDisplay">Guest</span>
                     <button id="authSignInBtn" onclick="Builder.openAuthModal(false)">Sign In</button>
-                    <button id="authSignUpBtn" onclick="Builder.openAuthModal(true)">Sign Up</button>
-                    <button id="authLogoutBtn" onclick="Builder.logout()" style="display: none;">Logout</button>
                 </div>
 
-                <button class="navbar-preset-btn primary" onclick="saveProjectToStorage()">💾 Save Project</button>
-                <button class="navbar-preset-btn secondary" onclick="loadProjectFromStorage()">📂 Load Project</button>
-                <button class="navbar-preset-btn tertiary" id="toggleVirtualMouseBtn" onclick="toggleVirtualMouse()">🖱️ Virtual Mouse: OFF</button>
+                <button class="navbar-preset-btn primary" onclick="saveProjectToStorage()">💾 Salvar</button>
+                <button class="navbar-preset-btn secondary" onclick="loadProjectFromStorage()">📂 Abrir</button>
+                <button class="navbar-preset-btn tertiary" id="toggleVirtualMouseBtn" onclick="toggleVirtualMouse()">🖱️ Mouse: OFF</button>
 
-                <button id="presetUploadBtn" onclick="Builder.openUploadPresetModal()" style="display: none;" class="navbar-preset-btn primary">Upload Preset</button>
-                <button id="presetManagementBtn" onclick="Builder.openPresetManagementModal()" style="display: none;" class="navbar-preset-btn secondary">Manage Presets</button>
-                <button class="navbar-preset-btn tertiary" onclick="Builder.texturePresetsModal()">Preset Textures</button>
-
-                <div class="navbar-divider"></div>
-
-                <button class="modalSettingsBtn" id="modalSettingsBtn">
-                    <span class="settings_label">Settings</span>
-                    <img class="settings_img" src="icons/settings_cog.webp" alt="Settings">
-                </button>
+                <button class="modalSettingsBtn navbar-preset-btn secondary" id="modalSettingsBtn">⚙️</button>
 
                 <div class="scale-control">
-                    <label for="ui_scale_slider" style="color: white; font-size: 12px; margin-right: 5px;">Scale:</label>
                     <input id="ui_scale_slider" type="range" min="10" max="100">
                 </div>
 
-                <button id="undo-btn" onclick="Builder.undo()" disabled title="Undo (Ctrl+Z)">↶ Undo</button>
-                <button id="redo-btn" onclick="Builder.redo()" disabled title="Redo (Ctrl+Y)">↷ Redo</button>
+                <button id="undo-btn" onclick="Builder.undo()" disabled>↶</button>
+                <button id="redo-btn" onclick="Builder.redo()" disabled>↷</button>
             </div>
 
             <div class="navbar-right">
                 <button class="navbar-preset-btn secondary" onclick="toggleFullScreen()">Fullscreen ⛶</button>
-                <img src="icons/help.webp" class="help_button" onclick="Builder.openHelpMenu()" alt="Help">
-                <a href="https://discord.gg/zqfNbYCcA9" class="discord_link" target="_blank">
-                    <img src="icons/discord.webp" class="discord_icon" alt="Discord">
-                </a>
-            </div>
-        </div>
-
-        <div id="modalSettings" class="modal">
-            <div class="modal-content">
-                <span id="modalSettingsClose" class="modalClose">&times;</span>
-                <h2 class="modalHeader">Settings</h2>
-                <div class="modalSettingsForm"></div>
-            </div>
-        </div>
-
-        <div id="modalAddButton" class="modal">
-            <div class="modal-content">
-                <span id="modalAddButtonClose" class="modalClose">&times;</span>
-                <h2 class="modalHeader">Add Button</h2>
-                <div class="modalAddButtonForm"></div>
-            </div>
-        </div>
-
-        <div id="modalCreateForm" class="modal">
-            <div class="modal-content">
-                <h2 class="modalHeader">Create Form</h2>
-                <div class="modalCreateFormForm"></div>
-            </div>
-        </div>
-
-        <div id="modalLoadTexturePresets" class="modal">
-            <div class="modal-content">
-                <span id="modalLoadTexturePresetsClose" class="modalClose">&times;</span>
-                <h2 class="modalHeader">Load Texture Presets</h2>
-                <div class="modalLoadTexturePresetsForm"></div>
-            </div>
-        </div>
-
-        <div id="modalHelpMenu" class="modal">
-            <div class="modal-content">
-                <span id="modalHelpMenuClose" class="modalClose">&times;</span>
-                <h2 class="modalHeader">Help</h2>
-                <div class="modalHelpMenuForm">
-                    <label style="font-weight: 500; color: rgb(255, 255, 255);">Key Binds:</label><br><br>
-                    <label class="modalOptionLabel">
-                        CTRL + c: <b>Copy</b><br>
-                        CTRL + v: <b>Paste</b><br>
-                        CTRL + x: <b>Cut</b><br>
-                        Tab: <b>Indent</b><br>
-                        Del: <b>Delete</b><br>
-                        Tab | Enter: <b>Autocomplete</b><br>
-                        Arrow Keys: <b>Move</b>
-                    </label><br><br><br>
-                    <label style="font-weight: 500; color: rgb(255, 255, 255); font-size: 20px;">General Issues:</label><br><br>
-                    <label style="font-weight: 500; color: rgb(255, 255, 255);">Why arent my buttons working in-game?</label><br><br>
-                    <label class="modalOptionLabel">You probably need to stack the button on top of a collection panel, if that doesnt fix it, check that all texture paths are correct</label><br><br>
-                    <label style="font-weight: 500; color: rgb(255, 255, 255);">Why isnt the form uploader working?</label><br><br>
-                    <label class="modalOptionLabel">The form uploader can only upload forms made by the website</label>
-                </div>
-            </div>
-        </div>
-
-        <div id="modalChooseImage" class="modal">
-            <div class="modal-content">
-                <span id="modalChooseImageClose" class="modalClose">&times;</span>
-                <h2 class="modalHeader">Choose Image</h2>
-                <img src="icons/nineslice.webp" style="width: 20px; position: relative; top: 5px; left: 5px;" alt="Nineslice">
-                <label style="font-weight: 500; color: rgb(255, 255, 255);">: Nineslice Image</label>
-                <div class="modalChooseImageForm"></div>
             </div>
         </div>
 
         <div class="main">
             <div class="buttons">
                 <div class="addElements">
-                    Elements:
-                    <button type="button" onclick="Builder.addPanel()">Add panel</button>
-                    <button type="button" onclick="Builder.openAddImageMenu()">Add image</button>
-                    <button type="button" onclick="Builder.addButton()">Add button</button>
-                    <button type="button" onclick="Builder.addCollectionPanel()">Add Collection Panel</button>
-                    <button type="button" onclick="Builder.addLabel()">Add Label</button>
-                    <button type="button" onclick="Builder.addScrollingPanel()">Add Scrolling Panel</button>
+                    <span style="font-size: 11px; font-weight: bold; color: #aaa;">ELEMENTOS</span>
+                    <button type="button" onclick="Builder.addPanel()">+ Panel</button>
+                    <button type="button" onclick="Builder.openAddImageMenu()">+ Image</button>
+                    <button type="button" onclick="Builder.addButton()">+ Button</button>
+                    <button type="button" onclick="Builder.addCollectionPanel()">+ Collection</button>
+                    <button type="button" onclick="Builder.addLabel()">+ Label</button>
+                    <button type="button" onclick="Builder.addScrollingPanel()">+ Scroll</button>
                 </div>
 
                 <div class="breaker"></div>
 
                 <div class="utilElements">
-                    <button class="utilElement" type="button" onclick="Builder.reset()">Reset <img style="width: 17px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/reset.webp" alt="Reset"> </button>
-                    <button class="utilElement" type="button" onclick="Builder.deleteSelected()">Delete Selected <img style="width: 20px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/bin.webp" alt="Delete"> </button>
-
-                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-                        <div class="utilElement" style="width: 100%;">Form</div>
-                        <img class="utilElement" title="Copy" onclick="Builder.generateAndCopyJsonUI('copy')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/clipboard.webp" alt="Copy">
-                        <img class="utilElement" title="Download" onclick="Builder.generateAndCopyJsonUI('download')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/download.webp" alt="Download">
-                    </div>
-
-                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-                        <div class="utilElement" style="width: 100%;">Server-Form</div>
-                        <img class="utilElement" title="Copy" onclick="Builder.downloadServerForm('copy')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/clipboard.webp" alt="Copy">
-                        <img class="utilElement" title="Download" onclick="Builder.downloadServerForm('download')" style="width: 20px; position: relative; filter: drop-shadow(0px 0px 5px #000000); cursor: pointer;" src="icons/download.webp" alt="Download">
-                    </div>
+                    <button type="button" onclick="Builder.reset()">Reset</button>
+                    <button type="button" onclick="Builder.deleteSelected()">Delete</button>
                 </div>
 
                 <div class="breaker"></div>
 
+                <span style="font-size: 11px; font-weight: bold; color: #aaa;">EXPLORER</span>
                 <div id="explorer" class="explorer"></div>
             </div>
 
             <div class="main_window_outline">
                 <div class="main_window" id="main_window">
-                    <img title="Background" src="background.png" width="100%" height="100%" class="bg_image" id="bg_image" alt="Background">
+                    <img title="Background" src="background.png" class="bg_image" id="bg_image" alt="Canvas Area">
                 </div>
             </div>
 
             <div class="scripter">
-                <div class="scripter_title_label">Script</div>
-                <div style="color: rgb(139, 139, 139);">For Fixed Collection Index Forms Only</div>
+                <div class="scripter_title_label">Scripting</div>
                 <div class="scripter_buttons">
-                    <button class="generate_js_scripter" id="generate_js_scripter">Copy <img style="width: 18px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/js.webp" alt="JavaScript"> To Clipboard</button>
-                    <button class="generate_ts_scripter" id="generate_ts_scripter">Copy <img style="width: 18px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/ts.webp" alt="TypeScript"> To Clipboard</button>
+                    <button id="generate_js_scripter">Copy JS</button>
+                    <button id="generate_ts_scripter">Copy TS</button>
                 </div>
 
-                <br><br><br>
+                <div class="breaker"></div>
 
                 <div class="scripter_title_label">Bindings</div>
-                <div style="color: rgb(139, 139, 139);">Advanced Feature</div>
-                <div id="errorMessage" title="Default Error Message" style="visibility: hidden; color: #7e0000;">Warnings ⚠️</div>
                 <textarea spellcheck="false" readonly class="bindings" id="bindings"></textarea>
-
-                <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
-                    <div style="font-size: 20px; color: rgb(39, 165, 255);">TAB</div>&nbsp To indent
-                    <div onclick="Builder.formatBindingsArea()" style="position: relative; margin-left: 15px; cursor: pointer;" class="utilElement">Format <img style="width: 20px; top: 3px; position: relative; filter: drop-shadow(0px 0px 5px #000000);" src="icons/curly_brackets.webp" alt="Format"></div>
-                </div>
+                <button onclick="Builder.formatBindingsArea()" style="padding: 4px; background: #333; color: white; border: 1px solid #444; border-radius: 4px; font-size: 10px; cursor: pointer;">Format Code</button>
             </div>
         </div>
-
-        <div id="properties" class="properties"></div>
-        <div id="notif-container"></div>
-        <div id="mainWarningMessage"></div>
     </div>
 
     <div id="virtualCursor">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" fill="#FFFFFF" stroke="#000000" stroke-width="2" stroke-linejoin="round"/>
         </svg>
     </div>
@@ -411,7 +431,7 @@
     <script src="./dist/index.js" type="module"></script>
 
     <script>
-        // --- 1. TELA CHEIA ---
+        // Fullscreen
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(() => {});
@@ -423,7 +443,7 @@
             }
         }
 
-        // --- 2. SALVAR E CARREGAR PROJETO NO LOCALSTORAGE ---
+        // Salvar / Carregar localmente
         function saveProjectToStorage() {
             try {
                 const projectData = {
@@ -431,12 +451,10 @@
                     bindings: document.getElementById('bindings')?.value || "",
                     timestamp: new Date().toISOString()
                 };
-
                 localStorage.setItem('json_ui_saved_project', JSON.stringify(projectData));
                 alert('✅ Projeto salvo com sucesso!');
             } catch (err) {
-                console.error("Erro ao salvar:", err);
-                alert('⚠️ Ocorreu um erro ao salvar o projeto.');
+                alert('⚠️ Erro ao salvar o projeto.');
             }
         }
 
@@ -447,24 +465,20 @@
                     alert('ℹ️ Nenhum projeto salvo encontrado.');
                     return;
                 }
-
                 const parsed = JSON.parse(savedData);
                 if (parsed.bindings && document.getElementById('bindings')) {
                     document.getElementById('bindings').value = parsed.bindings;
                 }
-
                 if (parsed.elements && typeof Builder !== 'undefined' && Builder.loadProject) {
                     Builder.loadProject(parsed.elements);
                 }
-                
                 alert('✅ Projeto carregado!');
             } catch (err) {
-                console.error("Erro ao carregar:", err);
                 alert('⚠️ Erro ao carregar o projeto.');
             }
         }
 
-        // --- 3. MOUSE VIRTUAL 100% PARA MOBILE ---
+        // --- SISTEMA DE MOUSE VIRTUAL MOBILE 100% COMPLETO ---
         let virtualMouseActive = false;
         const cursor = document.getElementById('virtualCursor');
         const btnToggle = document.getElementById('toggleVirtualMouseBtn');
@@ -477,16 +491,15 @@
 
         function toggleVirtualMouse() {
             virtualMouseActive = !virtualMouseActive;
-            
             if (virtualMouseActive) {
                 cursor.style.display = 'block';
-                btnToggle.innerText = '🖱️ Virtual Mouse: ON';
-                btnToggle.style.background = 'linear-gradient(135deg, #28a745, #218838)';
+                btnToggle.innerText = '🖱️ Mouse: ON';
+                btnToggle.style.background = '#28a745';
                 updateCursorPosition(cursorX, cursorY);
             } else {
                 cursor.style.display = 'none';
-                btnToggle.innerText = '🖱️ Virtual Mouse: OFF';
-                btnToggle.style.background = 'linear-gradient(135deg, #6f42c1, #5a32a3)';
+                btnToggle.innerText = '🖱️ Mouse: OFF';
+                btnToggle.style.background = '#6f42c1';
             }
         }
 
